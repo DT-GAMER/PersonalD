@@ -1,0 +1,169 @@
+timezone: Africa/Lagos
+
+weekly_template:
+  monday:
+    - time: "09:00-17:00"
+      type: work
+      title: Software Engineering Work
+
+    - time: "19:00-21:00"
+      type: class
+      course: MBA 701
+      title: Strategy Class
+
+    - time: "21:15-22:00"
+      type: study
+      course: MBA 701
+      title: Review Strategy notes
+
+  tuesday:
+    - time: "09:00-17:00"
+      type: work
+      title: Software Engineering Work
+
+    - time: "20:00-21:30"
+      type: study
+      course: MBA 702
+      title: Finance reading
+
+  wednesday:
+    - time: "09:00-17:00"
+      type: work
+      title: Software Engineering Work
+
+  thursday:
+    - time: "09:00-17:00"
+      type: work
+      title: Software Engineering Work
+
+    - time: "19:00-21:00"
+      type: class
+      course: MBA 702
+      title: Finance Class
+
+  friday:
+    - time: "09:00-17:00"
+      type: work
+      title: Software Engineering Work
+
+    - time: "20:00-21:00"
+      type: weekly_review
+      title: Weekly review and next-week planning
+
+  saturday:
+    - time: "10:00-12:00"
+      type: study
+      course: MBA 701
+      title: Strategy assignment block
+
+    - time: "14:00-16:00"
+      type: study
+      course: MBA 702
+      title: Finance practice block
+
+  sunday:
+    - time: "17:00-18:00"
+      type: planning
+      title: Prepare Monday plan
+
+events:
+  - start: "2026-07-02 20:00"
+    end: "2026-07-02 21:00"
+    type: study
+    course: MBA 702
+    title: Finance case study final pass
+
+deadlines:
+  - title: Finance case study
+    course: MBA 702
+    due: "2026-07-03 23:59"
+
+study_targets:
+  MBA 701:
+    weekly_hours: 8
+  MBA 702:
+    weekly_hours: 6
+
+notifications:
+  enabled: true
+  poll_seconds: 60
+  sound:
+    enabled: true
+    file: /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+    repeat: 2
+
+  defaults:
+    before_minutes: [10]
+    at_start: true
+
+  types:
+    class:
+      before_minutes: [60, 15, 5]
+      at_start: true
+    study:
+      before_minutes: [10]
+      at_start: true
+    work:
+      before_minutes: [5]
+      at_start: false
+    weekly_review:
+      before_minutes: [15]
+      at_start: true
+    planning:
+      before_minutes: [15]
+      at_start: true
+
+  deadlines:
+    before_hours: [48, 24, 6, 1]
+
+activity:
+  enabled: true
+  poll_seconds: 5
+
+browser:
+  enabled: true
+  port: 47833
+
+focus_modes:
+  mba_study:
+    title: MBA Study
+    duration_minutes: 50
+    break_minutes: 10
+    allowed_categories:
+      - study
+      - meeting
+    distracting_categories:
+      - distracting
+      - communication
+    drift_warning_after_minutes: 5
+
+  deep_work:
+    title: Deep Work
+    duration_minutes: 90
+    break_minutes: 15
+    allowed_categories:
+      - work
+      - meeting
+    distracting_categories:
+      - distracting
+      - communication
+    drift_warning_after_minutes: 8
+
+environments:
+  mba_study:
+    workspace: 3
+    open:
+      - app: obsidian
+      - url: https://docs.google.com
+      - url: https://drive.google.com
+    cleanup:
+      close_windows: []
+
+  work:
+    workspace: 1
+    open:
+      - app: code
+      - app: kitty
+      - url: https://github.com
+    cleanup:
+      close_windows: []

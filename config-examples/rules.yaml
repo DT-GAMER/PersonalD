@@ -1,0 +1,92 @@
+categories:
+  work:
+    apps:
+      - code
+      - kitty
+      - ghostty
+      - alacritty
+    title_contains:
+      - GitHub
+      - Jira
+      - Linear
+      - Pull Request
+      - Visual Studio Code
+
+  study:
+    apps:
+      - zathura
+      - evince
+      - obsidian
+      - libreoffice
+    title_contains:
+      - MBA
+      - Moodle
+      - Canvas
+      - Blackboard
+      - Google Docs
+      - Google Drive
+      - Scholar
+      - PDF
+      - lecture
+      - assignment
+
+  meeting:
+    title_contains:
+      - Google Meet
+      - Zoom
+      - Microsoft Teams
+      - Teams
+
+  communication:
+    apps:
+      - slack
+      - discord
+      - signal
+      - whatsapp
+    title_contains:
+      - Slack
+      - WhatsApp
+      - Signal
+
+  distracting:
+    title_contains:
+      - YouTube
+      - Netflix
+      - Reddit
+      - X / Home
+      - TikTok
+      - Instagram
+
+websites:
+  study:
+    - docs.google.com
+    - drive.google.com
+    - scholar.google.com
+    - moodle
+    - canvas
+    - blackboard
+
+  work:
+    - github.com
+    - gitlab.com
+    - jira
+    - linear.app
+    - notion.so
+
+  meeting:
+    - meet.google.com
+    - zoom.us
+    - teams.microsoft.com
+
+  communication:
+    - slack.com
+    - web.whatsapp.com
+    - mail.google.com
+
+  distracting:
+    - youtube.com
+    - netflix.com
+    - reddit.com
+    - x.com
+    - instagram.com
+    - tiktok.com

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "personald"
+version = "0.1.0"
+description = "A local planning, focus, reminder, and activity daemon for Linux."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "DTGamer" }
+]
+dependencies = [
+  "PyYAML>=6.0"
+]
+
+[project.scripts]
+personalctl = "personald.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["personald*"]

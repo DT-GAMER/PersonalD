@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "PersonalD Browser Bridge",
+  "version": "0.1.0",
+  "description": "Sends active tab activity to the local PersonalD daemon.",
+  "permissions": [
+    "alarms",
+    "notifications",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "http://127.0.0.1:47833/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "PersonalD"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "personald-browser-bridge@local"
+    }
+  }
+}
