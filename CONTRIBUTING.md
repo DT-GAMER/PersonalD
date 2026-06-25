@@ -72,20 +72,6 @@ Useful labels for maintainers:
 - `bug`: confirmed broken behavior
 - `docs`: documentation-only work
 - `enhancement`: new or improved behavior
-- `hacktoberfest`: issues selected for Hacktoberfest contributors
-
-## Hacktoberfest Notes
-
-During Hacktoberfest, please choose an issue labeled `hacktoberfest`, `good first issue`, or `help wanted`.
-
-Good Hacktoberfest issues should be:
-
-- Clearly scoped
-- Useful to the project
-- Testable
-- Small enough for a contributor to finish without guessing the whole roadmap
-
-Low-effort spam PRs will be closed. Meaningful docs, tests, examples, and bug fixes are welcome.
 
 ## Project Boundaries
 

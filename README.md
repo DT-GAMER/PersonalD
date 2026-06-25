@@ -276,17 +276,6 @@ Good first contributions include:
 - Adding platform notes for different Linux distributions
 - Helping make optional integrations cleaner
 
-## Hacktoberfest
-
-PersonalD can be prepared for Hacktoberfest by:
-
-- Adding the `hacktoberfest` topic to the GitHub repository
-- Labeling selected issues with `hacktoberfest`
-- Keeping beginner issues small, useful, and well-scoped
-- Reviewing PRs promptly and kindly
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a Hacktoberfest PR. Low-effort spam PRs will be closed, but meaningful docs, tests, bug fixes, and examples are welcome.
-
 ## Test
 
 ```bash
