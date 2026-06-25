@@ -1,0 +1,50 @@
+name: Feature Request
+description: Suggest an improvement for PersonalD
+title: "[Feature]: "
+labels: ["enhancement", "needs triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What would you like PersonalD to do?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Schedule
+        - Notifications
+        - Focus
+        - Activity tracking
+        - Browser bridge
+        - Calendar
+        - Reports
+        - CLI
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Any other approaches you considered?
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Project Boundaries
+      options:
+        - label: This feature can work local-first without remote telemetry.
+          required: true
+        - label: This feature does not require forced lockout behavior.
+          required: true

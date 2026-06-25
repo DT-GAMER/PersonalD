@@ -1,0 +1,56 @@
+name: Bug Report
+description: Report something broken in PersonalD
+title: "[Bug]: "
+labels: ["bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please remove private schedules, URLs, meeting links, and browser history from logs.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the broken behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run ...
+        2. Configure ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: |
+        - Linux distribution:
+        - Python version:
+        - Desktop/window manager:
+        - Install method:
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Paste relevant logs with private details removed.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety Check
+      options:
+        - label: I removed private schedules, URLs, tokens, and browser history from this issue.
+          required: true

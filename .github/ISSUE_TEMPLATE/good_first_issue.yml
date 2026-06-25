@@ -1,0 +1,41 @@
+name: Good First Issue Proposal
+description: Suggest a small task suitable for new contributors
+title: "[Good First Issue]: "
+labels: ["good first issue", "needs triage"]
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: Task
+      description: What small, focused task should be done?
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Likely Files
+      description: Which files might need changes?
+      placeholder: |
+        - personald/...
+        - tests/...
+        - README.md
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition Of Done
+      description: How will we know the task is complete?
+      placeholder: |
+        - Tests added or updated
+        - Docs updated
+        - Command works with ...
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope Check
+      options:
+        - label: This task is small enough for a new contributor.
+          required: true
+        - label: This task has a clear expected outcome.
+          required: true

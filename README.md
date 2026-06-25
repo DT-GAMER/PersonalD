@@ -19,6 +19,12 @@ It was built for a busy work-and-study workflow: keep the schedule close, show w
 
 PersonalD is not a strict blocker. It does not force pages open, lock apps, or prevent you from closing anything. It is designed to nudge, remind, and reflect your day back to you.
 
+## Project Status
+
+PersonalD is early, usable, and evolving. The core CLI, daemon, schedule reminders, focus sessions, browser bridge, reports, and local storage are working, but the project is still pre-1.0.
+
+Contributors are welcome. Good starting points are documentation, tests, config validation, desktop compatibility, browser bridge improvements, and small CLI quality-of-life fixes.
+
 ## Requirements
 
 - Linux
@@ -34,7 +40,7 @@ Hyprland is recommended for the activity and environment features. Schedule, rem
 Clone the repo:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/PersonalD.git
+git clone https://github.com/DT-GAMER/PersonalD.git
 cd PersonalD
 ```
 
@@ -248,6 +254,38 @@ PersonalD stores data locally by default:
 The browser bridge posts to `127.0.0.1` only. It does not send activity to a remote server.
 
 Do not commit your real `~/.config/personald/schedule.yaml` if it contains private class, work, or meeting details. Use `config-examples/schedule.yaml` as the public template.
+
+## Contributing
+
+PersonalD welcomes thoughtful contributions.
+
+Start here:
+
+- [Contributing guide](CONTRIBUTING.md)
+- [Roadmap](ROADMAP.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
+- [Security policy](SECURITY.md)
+- [Support guide](SUPPORT.md)
+
+Good first contributions include:
+
+- Fixing unclear docs
+- Adding tests for edge cases
+- Improving config examples
+- Improving error messages
+- Adding platform notes for different Linux distributions
+- Helping make optional integrations cleaner
+
+## Hacktoberfest
+
+PersonalD can be prepared for Hacktoberfest by:
+
+- Adding the `hacktoberfest` topic to the GitHub repository
+- Labeling selected issues with `hacktoberfest`
+- Keeping beginner issues small, useful, and well-scoped
+- Reviewing PRs promptly and kindly
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a Hacktoberfest PR. Low-effort spam PRs will be closed, but meaningful docs, tests, bug fixes, and examples are welcome.
 
 ## Test
 

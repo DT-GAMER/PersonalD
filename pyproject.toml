@@ -12,9 +12,27 @@ license = { text = "MIT" }
 authors = [
   { name = "DTGamer" }
 ]
+keywords = ["linux", "productivity", "daemon", "hyprland", "notifications", "focus"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Office/Business :: Scheduling",
+  "Topic :: Utilities"
+]
 dependencies = [
   "PyYAML>=6.0"
 ]
+
+[project.urls]
+Homepage = "https://github.com/DT-GAMER/PersonalD"
+Issues = "https://github.com/DT-GAMER/PersonalD/issues"
 
 [project.scripts]
 personalctl = "personald.cli:main"
