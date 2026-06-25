@@ -1,5 +1,17 @@
 timezone: Africa/Lagos
 
+schedule:
+  # When blocks overlap, the active block with the highest priority wins.
+  # Use this to let meetings/classes temporarily override broad work or study blocks.
+  type_priority:
+    meeting: 90
+    class: 80
+    event: 70
+    weekly_review: 60
+    planning: 50
+    study: 40
+    work: 10
+
 weekly_template:
   monday:
     - time: "09:00-17:00"

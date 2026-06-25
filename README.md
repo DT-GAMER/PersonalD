@@ -108,6 +108,49 @@ personalctl next
 personalctl reminders
 ```
 
+## Overlapping Blocks
+
+You can keep broad blocks broad and place specific activities inside them.
+
+For example:
+
+```yaml
+weekly_template:
+  monday:
+    - time: "09:00-15:00"
+      type: work
+      title: Software Engineering Work
+
+    - time: "13:00-14:00"
+      type: meeting
+      title: Team meeting
+```
+
+At `13:30`, PersonalD treats `Team meeting` as the active block because `meeting` has a higher default priority than `work`.
+
+Default priority is designed so specific blocks usually win over broad blocks:
+
+```yaml
+schedule:
+  type_priority:
+    meeting: 90
+    class: 80
+    event: 70
+    weekly_review: 60
+    planning: 50
+    study: 40
+    work: 10
+```
+
+You can override the priority for one block:
+
+```yaml
+- time: "13:00-14:00"
+  type: meeting
+  title: Critical meeting
+  priority: 100
+```
+
 ## Run The Daemon
 
 Check once without sending real desktop notifications:

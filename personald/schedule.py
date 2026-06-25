@@ -19,6 +19,23 @@ DAY_NAMES = (
     "sunday",
 )
 
+DEFAULT_TYPE_PRIORITY = {
+    "meeting": 90,
+    "class": 80,
+    "event": 70,
+    "calendar": 70,
+    "weekly_review": 60,
+    "planning": 50,
+    "study": 40,
+    "work": 10,
+}
+
+SOURCE_PRIORITY = {
+    "event": 30,
+    "calendar": 20,
+    "weekly": 10,
+}
+
 
 def get_timezone(config: dict) -> ZoneInfo:
     name = config.get("timezone", "UTC")
@@ -81,10 +98,10 @@ def deadlines_for_range(config: dict, start_day: date, days: int = 14) -> list[D
 
 
 def current_block(config: dict, moment: datetime) -> ScheduleBlock | None:
-    for block in blocks_for_day(config, moment.date()):
-        if block.is_active_at(moment):
-            return block
-    return None
+    active = [block for block in blocks_for_day(config, moment.date()) if block.is_active_at(moment)]
+    if not active:
+        return None
+    return max(active, key=lambda block: _block_priority_key(config, block))
 
 
 def next_block(config: dict, moment: datetime, search_days: int = 14) -> ScheduleBlock | None:
@@ -142,6 +159,7 @@ def _parse_weekly_block(raw: dict, day: date, tz: ZoneInfo) -> ScheduleBlock:
         title=str(raw.get("title", raw.get("type", "Untitled"))),
         course=_optional_str(raw.get("course")),
         source="weekly",
+        priority=_optional_int(raw.get("priority"), "weekly block priority"),
     )
 
 
@@ -159,6 +177,7 @@ def _parse_event_block(raw: dict, tz: ZoneInfo) -> ScheduleBlock:
         title=str(raw.get("title", raw.get("type", "Untitled"))),
         course=_optional_str(raw.get("course")),
         source="event",
+        priority=_optional_int(raw.get("priority"), "event priority"),
     )
 
 
@@ -205,3 +224,46 @@ def _optional_str(value: object) -> str | None:
     if value is None:
         return None
     return str(value)
+
+
+def _optional_int(value: object, label: str) -> int | None:
+    if value is None:
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError) as exc:
+        raise ConfigError(f"{label} must be an integer.") from exc
+
+
+def _block_priority_key(config: dict, block: ScheduleBlock) -> tuple[int, int, int, datetime, str]:
+    return (
+        _block_priority(config, block),
+        _source_priority(block.source),
+        -block.duration_minutes,
+        block.start,
+        block.title,
+    )
+
+
+def _block_priority(config: dict, block: ScheduleBlock) -> int:
+    if block.priority is not None:
+        return block.priority
+
+    block_type = block.type.lower()
+    schedule = config.get("schedule", {}) or {}
+    raw_priorities = schedule.get("type_priority", {}) if isinstance(schedule, dict) else {}
+    if isinstance(raw_priorities, dict):
+        raw = raw_priorities.get(block.type, raw_priorities.get(block_type))
+        if raw is not None:
+            try:
+                return int(raw)
+            except (TypeError, ValueError):
+                pass
+
+    source = block.source.split(":", maxsplit=1)[0]
+    return DEFAULT_TYPE_PRIORITY.get(block_type, DEFAULT_TYPE_PRIORITY.get(source, 50))
+
+
+def _source_priority(source: str) -> int:
+    prefix = source.split(":", maxsplit=1)[0]
+    return SOURCE_PRIORITY.get(prefix, 0)

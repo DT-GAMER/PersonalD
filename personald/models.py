@@ -12,6 +12,7 @@ class ScheduleBlock:
     title: str
     course: str | None = None
     source: str = "weekly"
+    priority: int | None = None
 
     @property
     def duration_minutes(self) -> int:
@@ -29,4 +30,3 @@ class Deadline:
 
     def is_upcoming_at(self, moment: datetime) -> bool:
         return self.due >= moment
-

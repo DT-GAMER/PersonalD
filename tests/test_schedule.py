@@ -33,6 +33,63 @@ class ScheduleTests(unittest.TestCase):
         self.assertIsNotNone(block)
         self.assertEqual(block.title, "Strategy Class")
 
+    def test_current_block_prefers_specific_overlap(self):
+        config = {
+            "timezone": "Africa/Lagos",
+            "weekly_template": {
+                "monday": [
+                    {"time": "09:00-15:00", "type": "work", "title": "Work block"},
+                    {"time": "13:00-14:00", "type": "meeting", "title": "Team meeting"},
+                ]
+            },
+        }
+        moment = datetime.fromisoformat("2026-06-29 13:30+01:00")
+
+        block = current_block(config, moment)
+
+        self.assertIsNotNone(block)
+        self.assertEqual(block.title, "Team meeting")
+
+    def test_current_block_allows_custom_type_priority(self):
+        config = {
+            "timezone": "Africa/Lagos",
+            "schedule": {
+                "type_priority": {
+                    "study": 95,
+                    "meeting": 50,
+                }
+            },
+            "weekly_template": {
+                "monday": [
+                    {"time": "09:00-15:00", "type": "study", "title": "Reading block"},
+                    {"time": "13:00-14:00", "type": "meeting", "title": "Optional meeting"},
+                ]
+            },
+        }
+        moment = datetime.fromisoformat("2026-06-29 13:30+01:00")
+
+        block = current_block(config, moment)
+
+        self.assertIsNotNone(block)
+        self.assertEqual(block.title, "Reading block")
+
+    def test_block_priority_field_overrides_type_priority(self):
+        config = {
+            "timezone": "Africa/Lagos",
+            "weekly_template": {
+                "monday": [
+                    {"time": "09:00-15:00", "type": "study", "title": "Reading block", "priority": 20},
+                    {"time": "13:00-14:00", "type": "meeting", "title": "Critical meeting", "priority": 100},
+                ]
+            },
+        }
+        moment = datetime.fromisoformat("2026-06-29 13:30+01:00")
+
+        block = current_block(config, moment)
+
+        self.assertIsNotNone(block)
+        self.assertEqual(block.title, "Critical meeting")
+
     def test_next_block_skips_past_blocks(self):
         config = load_yaml(EXAMPLE)
         moment = datetime.fromisoformat("2026-06-29 21:05+01:00")
