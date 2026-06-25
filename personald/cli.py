@@ -18,6 +18,7 @@ from personald.calendar import (
     clear_calendar_events,
     import_ics,
     calendar_events_for_day,
+    sync_calendar_sources,
     upcoming_calendar_events,
 )
 from personald.config import DEFAULT_CONFIG, DEFAULT_RULES, ConfigError, load_optional_yaml, load_yaml
@@ -143,6 +144,7 @@ def main(argv: list[str] | None = None) -> int:
     import_parser.add_argument("--name", help="source name, e.g. school")
     calendar_subparsers.add_parser("today", help="show imported calendar events for today")
     calendar_subparsers.add_parser("upcoming", help="show upcoming imported calendar events")
+    calendar_subparsers.add_parser("sync", help="sync configured calendar .ics sources")
     calendar_subparsers.add_parser("clear", help="clear imported calendar events")
     env_parser = subparsers.add_parser("env", help="start configured app/URL environments")
     env_subparsers = env_parser.add_subparsers(dest="env_command", required=True)
@@ -447,6 +449,11 @@ def handle_calendar_command(config: dict, args: argparse.Namespace, moment: date
             print("No upcoming imported calendar events.")
         for event in events[:30]:
             print(_format_calendar_event(event))
+    elif args.calendar_command == "sync":
+        events = sync_calendar_sources(config)
+        print(f"Synced {len(events)} calendar events.")
+        for event in events[:10]:
+            print(f"  {_format_calendar_event(event)}")
     elif args.calendar_command == "clear":
         clear_calendar_events()
         print("Cleared imported calendar events.")

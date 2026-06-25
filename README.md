@@ -231,6 +231,7 @@ personalctl plan move current --to 21:00
 
 personalctl browser latest
 personalctl calendar import ~/Downloads/school.ics --name school
+personalctl calendar sync
 personalctl calendar upcoming
 
 personalctl env list
@@ -266,6 +267,37 @@ For Chromium/Chrome:
 2. Enable Developer Mode
 3. Click `Load unpacked`
 4. Select `browser-extension/`
+
+## Calendar Sync
+
+PersonalD can import a local `.ics` file manually:
+
+```bash
+personalctl calendar import ~/Downloads/school.ics --name school
+```
+
+It can also sync configured `.ics` feeds:
+
+```yaml
+calendar:
+  sync:
+    enabled: true
+    every_minutes: 10
+    sources:
+      - name: google
+        url: "https://calendar.google.com/calendar/ical/YOUR_CALENDAR/basic.ics"
+```
+
+Run a sync manually:
+
+```bash
+personalctl calendar sync
+personalctl calendar upcoming
+```
+
+When the daemon is running, it syncs enabled calendar sources in the background. Imported calendar events appear in `personalctl today`, `personalctl next`, reminders, reports, and status output.
+
+For Google Calendar, the private **Secret address in iCal format** is usually more useful than a public calendar URL because it can include private meeting invitations. Do not commit or share the secret URL.
 
 ## Quickshell Integration
 

@@ -136,6 +136,14 @@ browser:
   enabled: true
   port: 47833
 
+calendar:
+  sync:
+    enabled: false
+    every_minutes: 10
+    sources:
+      - name: google
+        url: "https://calendar.google.com/calendar/ical/YOUR_CALENDAR/basic.ics"
+
 focus_modes:
   mba_study:
     title: MBA Study

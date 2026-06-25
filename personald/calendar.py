@@ -5,9 +5,11 @@ import re
 from dataclasses import dataclass
 from datetime import date, datetime, time
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 from zoneinfo import ZoneInfo
 
+from personald.config import ConfigError
 from personald.state import DEFAULT_STATE_DIR, load_json, save_json
 
 
@@ -41,6 +43,59 @@ def import_ics(
         merged[event.id] = event
     save_calendar_events(sorted(merged.values(), key=lambda event: (event.start, event.title)), state_path)
     return events
+
+
+def sync_calendar_sources(config: dict, state_path: Path = DEFAULT_CALENDAR_EVENTS) -> list[CalendarEvent]:
+    sources = calendar_sync_sources(config)
+    imported: list[CalendarEvent] = []
+    for source in sources:
+        events = import_ics(config, source["url"], name=source["name"], state_path=state_path)
+        imported.extend(events)
+    return sorted(imported, key=lambda event: (event.start, event.title))
+
+
+def calendar_sync_enabled(config: dict) -> bool:
+    raw = config.get("calendar", {}) or {}
+    if not isinstance(raw, dict):
+        return False
+    sync = raw.get("sync", {}) or {}
+    if not isinstance(sync, dict):
+        return False
+    return sync.get("enabled", False) is True
+
+
+def calendar_sync_seconds(config: dict) -> int:
+    raw = config.get("calendar", {}) or {}
+    sync = raw.get("sync", {}) if isinstance(raw, dict) else {}
+    if not isinstance(sync, dict):
+        return 900
+    try:
+        minutes = int(sync.get("every_minutes", 15))
+    except (TypeError, ValueError):
+        minutes = 15
+    return max(60, minutes * 60)
+
+
+def calendar_sync_sources(config: dict) -> list[dict[str, str]]:
+    raw = config.get("calendar", {}) or {}
+    sync = raw.get("sync", {}) if isinstance(raw, dict) else {}
+    if not isinstance(sync, dict):
+        return []
+
+    sources = sync.get("sources", []) or []
+    if not isinstance(sources, list):
+        return []
+
+    result: list[dict[str, str]] = []
+    for index, source in enumerate(sources, start=1):
+        if not isinstance(source, dict):
+            continue
+        url = source.get("url")
+        if not url:
+            continue
+        name = str(source.get("name") or f"calendar-{index}")
+        result.append({"name": name, "url": str(url)})
+    return result
 
 
 def load_calendar_events(state_path: Path = DEFAULT_CALENDAR_EVENTS) -> list[CalendarEvent]:
@@ -117,10 +172,15 @@ def parse_ics(text: str, tz: ZoneInfo, source_name: str = "calendar") -> list[Ca
 
 
 def _read_source(source: str) -> str:
-    if source.startswith("http://") or source.startswith("https://"):
-        with urlopen(source, timeout=15) as response:
-            return response.read().decode("utf-8", errors="replace")
-    return Path(source).expanduser().read_text(encoding="utf-8")
+    try:
+        if source.startswith("http://") or source.startswith("https://"):
+            with urlopen(source, timeout=15) as response:
+                return response.read().decode("utf-8", errors="replace")
+        return Path(source).expanduser().read_text(encoding="utf-8")
+    except HTTPError as exc:
+        raise ConfigError(f"Could not read calendar source {source}: HTTP {exc.code}") from exc
+    except (OSError, URLError) as exc:
+        raise ConfigError(f"Could not read calendar source {source}: {exc}") from exc
 
 
 def _timezone(config: dict) -> ZoneInfo:

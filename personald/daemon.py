@@ -5,6 +5,7 @@ from pathlib import Path
 
 from personald.activity import capture_now, poll_seconds
 from personald.browser import browser_enabled, start_browser_server
+from personald.calendar import calendar_sync_enabled, calendar_sync_seconds, sync_calendar_sources
 from personald.config import load_optional_yaml, load_yaml
 from personald.focus import check_focus
 from personald.notify import NotificationHistory, Notifier, due_reminders
@@ -27,6 +28,7 @@ def run(
 
     activity_enabled = _section_enabled(config, "activity")
     notifications_enabled = _section_enabled(config, "notifications")
+    calendar_enabled = calendar_sync_enabled(config)
     browser_server = None
     if browser_enabled(config):
         browser_server = start_browser_server(config, rules_path, db_path=db_path, dry_run=dry_run)
@@ -34,9 +36,11 @@ def run(
             print("[browser] server listening")
     activity_interval = poll_seconds(config)
     notify_interval = _notification_poll_seconds(config)
+    calendar_interval = calendar_sync_seconds(config)
     last_activity = 0.0
     last_notify = 0.0
     last_status = 0.0
+    last_calendar = 0.0
 
     try:
         while True:
@@ -77,6 +81,16 @@ def run(
                     notifier.send(reminder)
                     history.mark_sent(reminder)
                 last_notify = monotonic
+
+            if calendar_enabled and (last_calendar == 0.0 or monotonic - last_calendar >= calendar_interval):
+                try:
+                    events = sync_calendar_sources(config)
+                    if dry_run:
+                        print(f"[calendar] synced {len(events)} events")
+                except Exception as exc:
+                    if dry_run:
+                        print(f"[calendar] sync failed: {exc}")
+                last_calendar = monotonic
 
             if once:
                 return
